@@ -8,11 +8,18 @@ import {
 } from "react-google-maps";
 
 
-const Map = () => {
+const Map = (props) => {
+  const [InitialCoordinates, setInitialCoordinates] = useState(
+      {
+          lat: -33.436884, 
+          lng: -70.634395 
+      })
   const [ dataCoordinates, setDataCoordinate] = useState({
     latitude : '',
     longitude : ''
   })
+
+
   const handleInputChange = (e) => {
     
     setDataCoordinate({
@@ -22,11 +29,18 @@ const Map = () => {
     })
     // console.log(typeof("tipo", e.target.value))
 }
-const enviarDatos = (e) => {
+const getCoordinates = (e) => {
   e.preventDefault()
   console.log('enviando datos...' + parseFloat(dataCoordinates.latitude)  + ' ' + parseFloat(dataCoordinates.longitude)
-  
-  )};
+  )
+  setInitialCoordinates({
+    ...InitialCoordinates,
+      [InitialCoordinates.lat]: parseFloat(dataCoordinates.latitude).value,
+      [InitialCoordinates.lng]:parseFloat(dataCoordinates.longitude).value
+    
+  }
+  )
+ };
  
 // const latNumber = parseFloat(dataCoordinates.latitude) 
 // const lngNumber = parseFloat(dataCoordinates.longitude) 
@@ -35,7 +49,7 @@ const enviarDatos = (e) => {
   return (
     <>
     <ContainerSearch>
-      <Form onSubmit={enviarDatos}>
+      <Form onSubmit={getCoordinates}>
         
      
        <Input type="text" placeholder="Latitud"  onChange={handleInputChange} name="latitude"/>
@@ -48,7 +62,7 @@ const enviarDatos = (e) => {
    
     <GoogleMap
     defaultZoom={15}
-    defaultCenter={{ lat: -33.436884, lng: -70.634395 }}
+    defaultCenter={InitialCoordinates}
   >
     <Marker
       position={{ lat: parseFloat(dataCoordinates.latitude), lng:parseFloat(dataCoordinates.longitude)
