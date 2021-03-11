@@ -10,7 +10,7 @@ const App = (props) => {
   const mapURl = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.exp&libraries=geometry,drawing,places`;
 
 
-  
+  console.log(apiKey);
 
 
   // useEffect(() => {
