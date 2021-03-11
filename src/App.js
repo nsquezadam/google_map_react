@@ -3,7 +3,7 @@ import Map from './components/Map'
 import key from './key.js';
 
 
-//AIzaSyCGIRHlHQX_miCOxHGMs0I9G4gydRT3Eek
+
 
 const App = (props) => {
   const apiKey = key.mapKeyApi
