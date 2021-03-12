@@ -12,7 +12,8 @@
 --normal-font:12px;
 
 }
-html, body {
+
+html, body, #root {
   padding: 0;
   margin: 0;
   font-size: var(--normal-font);
@@ -20,6 +21,7 @@ html, body {
   height: 100vh;
 
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
