@@ -1,11 +1,11 @@
 import React from 'react';
 import MapGoogle from './components/MapGoogle'
+// import styled from 'styled-components';
 
 
 
 
-
-const App = (props) => {
+const App = () => {
   // const apiKey = key.mapKeyApi
   // const mapURl = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3.exp&libraries=geometry,drawing,places`;
 
@@ -28,6 +28,9 @@ const App = (props) => {
    </>
   );
 }
+
+
+
 
 export default App;
 
