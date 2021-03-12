@@ -1,12 +1,15 @@
 {
-  "homepage":"https://nsquezadam.github.io/google_map_react/",
+  "homepage": "https://nsquezadam.github.io/google_map_react/",
   "name": "app_google_map",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reach/combobox": "^0.13.2",
+    "@react-google-maps/api": "^2.1.1",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "date-fns": "^2.19.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-geocode": "^0.2.3",
@@ -14,6 +17,7 @@
     "react-google-maps": "^9.4.5",
     "react-scripts": "4.0.3",
     "styled-components": "^5.2.1",
+    "use-places-autocomplete": "^1.9.1",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
@@ -21,8 +25,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy":"npm run build",
-    "deploy":"gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
