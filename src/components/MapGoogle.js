@@ -10,6 +10,11 @@ import {formatRelative} from 'date-fns'
 //import Search from './Search'
 import Locate from './Locate';
 import SearchCoodinates from './SearchCoodinates';
+import greenMarked from '../assets/greenMarked.svg'
+import redMarked from '../assets/redMarked.svg'
+import yelowMarked from '../assets/yelowMarked.svg'
+
+
 
 
 
@@ -28,8 +33,7 @@ const options = {
 }
 
 
-const MapGoogle = (props) => {
-
+const MapGoogle = () => {
 
 
 
@@ -45,9 +49,27 @@ const mapContainerStyle ={
 
 
 
-  const [showSearching, setShowSearching] = useState(false)
+
   const [markers, setMarkers] = useState([])
   const [selected, setSelected] = useState(null)
+  const [markedCurrentPosition, SetMarkedCurrentPosition] = useState({
+          lat: "",
+          lng: "",
+  })
+  
+  const onMapMarketMyposition = useCallback((e)=>{
+    SetMarkedCurrentPosition(current => [...current,
+    {
+      lat:e.latLng.lat(),
+      lng:e.latLng.lng(),
+      time:new Date(),
+    } ] )
+
+  },[])
+  // const position = {
+  //   lat: lat,
+  //   lng: lng,
+  // }
 
   const onMapClick = useCallback((e)=>{
     setMarkers(current =>[...current,{
@@ -59,9 +81,8 @@ const mapContainerStyle ={
 
 
   const mapRef = useRef();
-  const onMapLoad =  useCallback((map) => {
-      mapRef.current = map
-    },[])
+  const onMapLoad =  useCallback((map) => {mapRef.current = map},[])
+
   const panTo = useCallback(({lat, lng}) => {
     mapRef.current.panTo({lat, lng})
     mapRef.current.setZoom(18)
@@ -76,15 +97,48 @@ const mapContainerStyle ={
   if(loadError) return  "Error loading Map";
   if(!isLoaded) return  "Loading Map";
 
+  const handleClickCurrentPosition = () =>{
+
+    console.log('boton para volver a la misma posicion')
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        panTo({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        console.log(position.coords.latitude, position.coords.longitude)
+        SetMarkedCurrentPosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        })
+      },
+   
+      () => null
+    )
+  }else{
+    console.log("no soporta geolocalizacion")
+  }
+}
   
+
+
+
+
+const position ={
+    lat:markedCurrentPosition.lat,
+    lng:markedCurrentPosition.lng,
+  }
+
+
   return (
     <>
 
   
-    <Locate panTo={panTo}/>
+    <Locate clickMyPosition={handleClickCurrentPosition}/>
    
     {/* <Search panTo={panTo}/> */}
-    <SearchCoodinates panTo={panTo} />
+    <SearchCoodinates  panTo={panTo} />
    
     <GoogleMap 
     mapContainerStyle={mapContainerStyle}
@@ -93,7 +147,19 @@ const mapContainerStyle ={
     options={options}
     onClick={onMapClick}
     onLoad={onMapLoad} >
-   
+      
+     <Marker 
+     position={position}
+    //  onClick={() => {
+    //   setSelected(marker);
+    // }}
+    icon={{
+      url: {redMarked},
+      origin: new window.google.maps.Point(0, 0),
+      anchor: new window.google.maps.Point(15, 15),
+      scaledSize: new window.google.maps.Size(30, 30),
+    }}
+     />
       {markers.map((marker) => {
         return(
       <Marker 
@@ -104,6 +170,12 @@ const mapContainerStyle ={
       }}
       onClick={()=> 
         setSelected(marker)}  
+        icon={{
+          url: {greenMarked},
+          origin: new window.google.maps.Point(0, 0),
+          anchor: new window.google.maps.Point(15, 15),
+          scaledSize: new window.google.maps.Size(30, 30),
+        }}
       />)})}
       {selected ? (<InfoWindow 
       position={{lat: selected.lat, lng: selected.lng}}
