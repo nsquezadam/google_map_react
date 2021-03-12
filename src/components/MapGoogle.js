@@ -5,27 +5,16 @@ import { GoogleMap,
          InfoWindow 
         } from '@react-google-maps/api';
 
-import mapStyles from '../mapStyle';
+//import mapStyles from '../mapStyle';
 import {formatRelative} from 'date-fns'
-import Search from './Search'
+//import Search from './Search'
 import Locate from './Locate';
+import SearchCoodinates from './SearchCoodinates';
 
 
-
-
-
-
-const MapGoogle = (props) => {
 
 
 const libraries=["places"]
-
-const mapContainerStyle ={
-   
-  width: "100vw",
-  height: "100vh",
-} 
-
 //-33.436884, -70.634395 
 const center = {
   lat: -33.436884, 
@@ -33,17 +22,30 @@ const center = {
 }
 console.log(center)
 const options = {
-  styles: mapStyles,
+  // styles: mapStyles,
   disableDefaultUI:true,
   zoomControl:true,
 }
 
 
+const MapGoogle = (props) => {
 
 
 
 
- 
+const mapContainerStyle ={
+   
+  width: "100vw",
+  height: "100vh",
+} 
+
+
+
+
+
+
+
+  const [showSearching, setShowSearching] = useState(false)
   const [markers, setMarkers] = useState([])
   const [selected, setSelected] = useState(null)
 
@@ -61,10 +63,8 @@ const options = {
       mapRef.current = map
     },[])
   const panTo = useCallback(({lat, lng}) => {
-  
     mapRef.current.panTo({lat, lng})
-    mapRef.current.setZoom(14)
-    
+    mapRef.current.setZoom(18)
   },[])  
 
   const {isLoaded, loadError } = useLoadScript({
@@ -79,8 +79,12 @@ const options = {
   
   return (
     <>
+
+  
     <Locate panTo={panTo}/>
-    <Search panTo={panTo}/>
+   
+    {/* <Search panTo={panTo}/> */}
+    <SearchCoodinates panTo={panTo} />
    
     <GoogleMap 
     mapContainerStyle={mapContainerStyle}

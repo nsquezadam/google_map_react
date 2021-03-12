@@ -1,98 +1,69 @@
-// import React from 'react';
-// import usePlacesAutocomplete, {
-//   getGeocode,
-//   getLatLng,
-// } from "use-places-autocomplete";
-// import Geocode from "react-geocode";
-// import {  Combobox,
-//   ComboboxInput,  
-//   ComboboxPopover,  
-//   ComboboxList,  
-//   ComboboxOption,  
-//   ComboboxOptionText} from "@reach/combobox";
-
-// import "@reach/combobox/styles.css";
-// import "../assets/styles.css"
+import React, { useState } from "react";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import Geocode from "react-geocode";
 
 
-// Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
+import "@reach/combobox/styles.css";
+import "../assets/styles.css";
 
-// const SearchCoodinates = () => {
+Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
 
-//   // const {
-//   //   ready, 
-//   //   value, 
-//   //   suggestions:{status, data},
-//   //   setValue, 
-//   //   clearSuggestions} 
-//   //   = usePlacesAutocomplete({
-//   //     requestOptions:{
-//   //       location:{lat:()=>-33.436884, lng:() => -70.634395 },  
-//   //        radius: 0,
-//   //      },
-//   //     })
+const SearchCoodinates = ({ panTo }) => {
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
 
-//   const [lat, setLat] = useState(null);
-//   const [lng, setLng] = useState(null);
-//   const [status, setStatus] = useState(null);
+  // <Combobox onSelect={async(latLng)=>{
+  //   setValue(latLng, false);
+  //   clearSuggestions()
+  //   try {
+  //     const results = await getGeocode({latLng})
+  //     const {lat, lng} = await getLatLng(results[0])
+  //    panTo({lat, lng})
+  //    console.log(lat, lng)
 
-// const getInfoAdressFronLatLng =  () => {
-//   // const lat =  "48.8583701";
-//   // const lng =  "2.2922926";
+  //    } catch (error) {
+  //      console.log("mensaje error",error)
+  //   }
 
-//   Geocode.fromLatLng(lat, lng).then(
-//     (response) => {
-//       const address = response.results[0].formatted_address;
-//       let city, state, country;
-//       for (let i = 0; i < response.results[0].address_components.length; i++) {
-//         for (let j = 0; j < response.results[0].address_components[i].types.length; j++) {
-//           switch (response.results[0].address_components[i].types[j]) {
-//             case "locality":
-//               city = response.results[0].address_components[i].long_name;
-//               break;
-//             case "administrative_area_level_1":
-//               state = response.results[0].address_components[i].long_name;
-//               break;
-//             case "country":
-//               country = response.results[0].address_components[i].long_name;
-//               break;
-//           }
-//         }
-//       }
-//       console.log(city, state, country);
-//       console.log(address);
-//     },
-//     (error) => {
-//       console.error(error);
-//     }
-//   )
-// }
+  // }}>
+  let lat = parseFloat(latitude);
+  let lng = parseFloat(longitude);
 
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(latitude, longitude);
     
+  };
 
+  // prueba browser 46.8071365,2.4060443
+  //-33.4769256,-70.6028153
+  const handleClickSearch = ()=> {
+       panTo({lat, lng})
+       
+  }
 
-   
-//      return (
-//        <div className="search">
-//        <Combobox onSelect={(coordinates)=>{
-//          console.log(coordinates)
-//        }}>
-//          <ComboboxInput 
-//          value={value} 
-//          onChange={(e)=> setValue(e.target.value)}
-//          disabled={!ready} 
-//          placeholder="Por Favor Ingrese una direccion"
-         
-//          />
-//          <ComboboxPopover>
-//            {status === "OK" && data.map(({id, description})=> (
-//            <ComboboxOption  key={id} value={description} />))}
-//          </ComboboxPopover>
-//        </Combobox>
-//        </div>
-//      );
-//    }
+  return (
+    <div className="searchCoordinate">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={latitude}
+          onChange={(e) => setLatitude(e.target.value)}
+          placeholder ="Ingresa Latitud"
+        />
+        <input
+          type="text"
+          value={longitude}
+          onChange={(e) => setLongitude(e.target.value)}
+          placeholder ="Ingresa Longitud"        
+        />
+        <button type="submit" onClick={handleClickSearch}>Buscar</button>
+      </form>
+    </div>
+  );
+};
 
-// export default SearchCoodinates;
-
+export default SearchCoodinates;
