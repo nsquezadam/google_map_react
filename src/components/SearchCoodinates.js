@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-
-import Geocode from "react-geocode";
-
-
 import "@reach/combobox/styles.css";
 import "../assets/styles.css";
 
-Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
 
 const SearchCoodinates = ({panTo, markTo}) => {
   const [latitude, setLatitude] = useState("");
