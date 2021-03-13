@@ -33,8 +33,9 @@ const options = {
 }
 
 
-const MapGoogle = () => {
+const MapGoogle = ({latitude, longitude}) => {
 
+ 
 
 
 const mapContainerStyle ={
@@ -56,20 +57,13 @@ const mapContainerStyle ={
           lat: "",
           lng: "",
   })
+  const [searchedLocationMarker, setSearchedLocationMarker] = useState({
+    lat: "",
+    lng: "",
+})
   
-  const onMapMarketMyposition = useCallback((e)=>{
-    SetMarkedCurrentPosition(current => [...current,
-    {
-      lat:e.latLng.lat(),
-      lng:e.latLng.lng(),
-      time:new Date(),
-    } ] )
-
-  },[])
-  // const position = {
-  //   lat: lat,
-  //   lng: lng,
-  // }
+ 
+ 
 
   const onMapClick = useCallback((e)=>{
     setMarkers(current =>[...current,{
@@ -87,6 +81,15 @@ const mapContainerStyle ={
     mapRef.current.panTo({lat, lng})
     mapRef.current.setZoom(18)
   },[])  
+
+  const markTo = useCallback(({lat, lng})=>{
+    
+    setSearchedLocationMarker( {
+      lat: lat,
+      lng: lng,
+  })
+
+  },[])
 
   const {isLoaded, loadError } = useLoadScript({
    
@@ -122,9 +125,6 @@ const mapContainerStyle ={
 }
   
 
-
-
-
 const position ={
     lat:markedCurrentPosition.lat,
     lng:markedCurrentPosition.lng,
@@ -138,7 +138,7 @@ const position ={
     <Locate clickMyPosition={handleClickCurrentPosition}/>
    
     {/* <Search panTo={panTo}/> */}
-    <SearchCoodinates  panTo={panTo} />
+    <SearchCoodinates  panTo={panTo}  markTo={markTo}/>
    
     <GoogleMap 
     mapContainerStyle={mapContainerStyle}
@@ -150,11 +150,26 @@ const position ={
       
      <Marker 
      position={position}
+     onClick={() => {
+      setSelected(markedCurrentPosition);
+    }}
+    icon={{
+      url: `${redMarked}`,
+      origin: new window.google.maps.Point(0, 0),
+      anchor: new window.google.maps.Point(15, 15),
+      scaledSize: new window.google.maps.Size(30, 30),
+    }}
+     />
+      <Marker 
+     position={{
+      lat: parseFloat(searchedLocationMarker.lat),
+      lng: parseFloat(searchedLocationMarker.lng),
+}}
     //  onClick={() => {
-    //   setSelected(marker);
+    //   setSelected(positionSearch);
     // }}
     icon={{
-      url: {redMarked},
+      url: `${yelowMarked}`,
       origin: new window.google.maps.Point(0, 0),
       anchor: new window.google.maps.Point(15, 15),
       scaledSize: new window.google.maps.Size(30, 30),
@@ -171,10 +186,10 @@ const position ={
       onClick={()=> 
         setSelected(marker)}  
         icon={{
-          url: {greenMarked},
+          url: `${greenMarked}`,
           origin: new window.google.maps.Point(0, 0),
           anchor: new window.google.maps.Point(15, 15),
-          scaledSize: new window.google.maps.Size(30, 30),
+          scaledSize: new window.google.maps.Size(40, 40),
         }}
       />)})}
       {selected ? (<InfoWindow 
