@@ -162,12 +162,12 @@ const position ={
      />
       <Marker 
      position={{
-      lat: parseFloat(searchedLocationMarker.lat),
-      lng: parseFloat(searchedLocationMarker.lng),
+      lat: searchedLocationMarker.lat,
+      lng: searchedLocationMarker.lng,
 }}
-    //  onClick={() => {
-    //   setSelected(positionSearch);
-    // }}
+     onClick={() => {
+      setSelected(searchedLocationMarker);
+    }}
     icon={{
       url: `${yelowMarked}`,
       origin: new window.google.maps.Point(0, 0),
@@ -178,6 +178,9 @@ const position ={
       {markers.map((marker) => {
         return(
       <Marker 
+      onLoad={ marker => {
+        console.log('marker: ', marker)
+      }}
       key={marker.time.toISOString()}
       position={{
         lat:marker.lat,
